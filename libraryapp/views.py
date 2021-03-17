@@ -10,17 +10,18 @@ from .serializers import BookSerializer, BookInstanceSerializer, UserProfileSeri
 from .models import Book, BookInstance, UserProfile
 
 
-class BooksView(APIView):
-    def get(self, request):
-        books = Book.objects.all()
-        serializer = BookSerializer(books, many=True)
-        return Response(serializer.data)
+class BooksView(ListCreateAPIView):
+        queryset = Book.objects.all()
+        serializer_class = BookSerializer
+        permission_classes = [IsAuthenticated]
+
 
 class BookInstanceView(APIView):
     def get(self, request):
         bookinstances = BookInstance.objects.all()
         serializer = BookInstanceSerializer(bookinstances, many=True)
         return Response(serializer.data)
+
 
 class UserProfileListCreateView(ListCreateAPIView):
     queryset = UserProfile.objects.all()
@@ -30,6 +31,7 @@ class UserProfileListCreateView(ListCreateAPIView):
     def perform_create(self, serializer):
         user = self.request.user
         serializer.save(user=user)
+
 
 class UserProfileDetailView(RetrieveUpdateDestroyAPIView):
     queryset = UserProfile.objects.all()
