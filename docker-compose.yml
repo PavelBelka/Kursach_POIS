@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8
+    ports:
+      - "3306:3307"
+    environment:
+      - MYSQL_DATABASE='library'
+      - MYSQL_USER='library'
+      - MYSQL_PASSWORD='Kursach20'
+      - MYSQL_ROOT_PASSWORD='root'
+      - MYSQL_HOST='localhost'
+    volumes:
+      - ./db:/var/lib/mysql
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/libraryapp
+      - /tmp/app/mysqld:/run/mysqld
+    depends_on:
+      - db

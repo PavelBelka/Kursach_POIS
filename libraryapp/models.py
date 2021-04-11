@@ -2,6 +2,8 @@ import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Author(models.Model):
@@ -33,7 +35,7 @@ class Book(models.Model):
     authors = models.ManyToManyField(Author)
     isbn = models.CharField('ISBN', max_length=17)
     genre = models.ManyToManyField(Genre)
-    id_inst = models.OneToOneField(BookInstance, on_delete=models.CASCADE)
+    id_inst = models.OneToOneField(BookInstance, on_delete=models.CASCADE, blank=True, null=True)
 
     BOOK_STATUS = (
         ('a', 'Available'),
@@ -50,9 +52,19 @@ class Book(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     location = models.TextField(blank=True, null=True)
+    phone = models.CharField(blank=True, null=True, max_length=12)
     date_joined = models.DateTimeField(auto_now_add=True)
     update_on = models.DateTimeField(auto_now=True)
     is_reader = models.BooleanField(default=True)
 
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            UserProfile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
+
     def __str__(self):
-        return self.user.name
+        return self.user.username
