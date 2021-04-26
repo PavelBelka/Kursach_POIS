@@ -81,15 +81,12 @@ WSGI_APPLICATION = 'library.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'library',
         'USER': 'library',
         'PASSWORD': 'Kursach20',
-        'HOST': 'localhost',
-        'PORT': '3306',
-        'OPTIONS':{
-            'charset': 'utf8mb4',
-        }
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 

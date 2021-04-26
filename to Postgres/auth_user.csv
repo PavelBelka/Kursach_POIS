@@ -1,0 +1,2 @@
+"id";"password";"last_login";"is_superuser";"username";"first_name";"last_name";"email";"is_staff";"is_active";"date_joined"
+1;"pbkdf2_sha256$216000$mbRhyyLXm8FR$uVB2q3Bbc8L0y3kxv8RR9dae5BunktqDHZvDomOzI60=";"2021-04-11 13:16:02.711670";1;"admin";"";"";"admin@admins.com";1;1;"2021-03-12 13:32:00.660220"
