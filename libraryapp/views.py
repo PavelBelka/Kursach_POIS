@@ -2,10 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, RetrieveAPIView, ListAPIView, \
     CreateAPIView
-from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.response import Response
 
-from .permissions import IsOwnerProfileOrReadOnly, IsReaderOrAdmin
 from .serializers import BookSerializer, BookInstanceSerializer, UserProfileSerializer, GenreSerializer, \
     AuthorSerializer, BookInstanceAdminSerializer, UserCreateSerializer, UserSerializer
 from .models import Book, BookInstance, UserProfile, Genre, Author
@@ -14,31 +12,26 @@ from .models import Book, BookInstance, UserProfile, Genre, Author
 class AuthorListCreateView(ListCreateAPIView):
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
-    permission_classes = [IsAuthenticated, IsReaderOrAdmin,]
 
 
 class AuthorDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Author.objects.filter()
     serializer_class = AuthorSerializer
-    permission_classes = [IsAuthenticated, IsReaderOrAdmin,]
 
 
 class GenreListCreateView(ListCreateAPIView):
     queryset = Genre.objects.all()
     serializer_class = GenreSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class GenreDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Genre.objects.filter()
     serializer_class = GenreSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class BooksView(ListCreateAPIView):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
-    permission_classes = [IsReaderOrAdmin]
 
     def create(self, request, *args, **kwargs):
         data = request.data
@@ -59,11 +52,9 @@ class BooksView(ListCreateAPIView):
 class BookDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.filter()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
 
     def update(self, request, *args, **kwargs):
         data = request.data
-        #secur = BookInstance.objects.get(id_security=data['id_inst']['id_security'])
         book = Book.objects.get(id=self.kwargs['pk'])
         book.title = data['title']
         book.isbn = data['isbn']
@@ -85,18 +76,15 @@ class BookInstanceDetailView(RetrieveUpdateDestroyAPIView):
     lookup_field = 'id_security'
     queryset = BookInstance.objects.filter()
     serializer_class = BookInstanceSerializer
-    permission_classes = [IsAuthenticated, IsReaderOrAdmin]
 
 
 class BookInstanceListCreateView(ListCreateAPIView):
     queryset = BookInstance.objects.all()
     serializer_class = BookInstanceAdminSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
 
 
 class UserRegisterView(CreateAPIView):
     queryset = User.objects.all()
-    permission_classes = (AllowAny,)
     serializer_class = UserCreateSerializer
 
     def create(self, request, *args, **kwargs):
@@ -109,7 +97,6 @@ class UserRegisterView(CreateAPIView):
 class UserProfileListCreateView(ListCreateAPIView):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [IsAuthenticated, ]
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -118,7 +105,6 @@ class UserProfileListCreateView(ListCreateAPIView):
 
 class UserProfileDetailView(RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
-    permission_classes = [IsOwnerProfileOrReadOnly, IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         serializer = self.serializer_class(request.user)
