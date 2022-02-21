@@ -87,7 +87,7 @@ class AuthorSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     authors = AuthorToBookSerializer(many=True, read_only=True)
     genre = GenreSerializer(many=True, read_only=True)
-    id_inst = BookInstanceToBookSerializer(many=False, read_only=True)
+    id_instance = BookInstanceToBookSerializer(many=False, read_only=True)
 
     class Meta:
         model = Book

@@ -31,18 +31,16 @@ class BookInstance(models.Model):
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=256)
-    authors = models.ManyToManyField(Author)
-    isbn = models.CharField('ISBN', max_length=17)
-    genre = models.ManyToManyField(Genre)
-    id_inst = models.OneToOneField(BookInstance, on_delete=models.CASCADE, blank=True, null=True)
-
     BOOK_STATUS = (
         ('a', 'Available'),
         ('e', 'Expectation'),
         ('n_a', 'Not available')
     )
-
+    title = models.CharField(max_length=256)
+    authors = models.ManyToManyField(Author)
+    isbn = models.CharField('ISBN', max_length=17)
+    genre = models.ManyToManyField(Genre)
+    id_instance = models.OneToOneField(BookInstance, on_delete=models.CASCADE, blank=True, null=True)
     status = models.CharField(max_length=3, choices=BOOK_STATUS, blank=True, default='n_a')
 
     def __str__(self):
@@ -58,12 +56,12 @@ class UserProfile(models.Model):
     is_reader = models.BooleanField(default=True)
 
     @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
+    def create_user_profile(self, instance, created, **kwargs):
         if created:
             UserProfile.objects.create(user=instance)
 
     @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
+    def save_user_profile(self, instance, **kwargs):
         instance.profile.save()
 
     def __str__(self):
