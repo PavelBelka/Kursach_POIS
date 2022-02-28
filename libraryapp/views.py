@@ -41,7 +41,7 @@ class BooksView(ListCreateAPIView):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        security = BookInstance.objects.get(id_security=data['id_inst']['id_security'])
+        security = BookInstance.objects.get(id_security=data['id_instance']['id_security'])
         book = Book.objects.create(title=data['title'], isbn=data['isbn'], status=data['status'], id_instance=security)
         book.save()
         for author in data['authors']:
@@ -58,7 +58,7 @@ class BooksView(ListCreateAPIView):
 class BookDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.filter()
     serializer_class = BookSerializer
-    permission_classes = [IsAuthenticated, IsAdminUser]
+    permission_classes = (IsAuthenticated, IsAdminUser)
 
     def update(self, request, *args, **kwargs):
         data = request.data
