@@ -20,5 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('libraryapp.auth_urls')),
     path('api/', include('libraryapp.urls')),
-    path('home/', include('frontend.urls')),
+    path('', include('frontend.urls')),
 ]

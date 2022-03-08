@@ -12,7 +12,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    fetch("api/lead")
+    fetch("api/books")
       .then(response => {
         if (response.status > 400) {
           return this.setState(() => {
@@ -33,15 +33,34 @@ class App extends Component {
 
   render() {
     return (
-      <ul>
-        {this.state.data.map(contact => {
+      <ol>
+        {this.state.data.map(book => {
           return (
-            <li key={contact.id}>
-              {contact.name} - {contact.email}
+            <li key={book.id}>
+              Название книги: {book.title}
+			  <br/>
+			  isbn: {book.isbn}
+			  <br/>
+			  Автор: {book.authors.map(author => {
+						return (
+						<div>
+							{author.first_name} {author.last_name}
+						</div>
+						);
+			  })}
+			  <br/>
+			  Жанр: {book.genre.map(genres => {
+						return(
+						<div>
+							{genres.name}
+						</div>
+						);
+			  })}
+			  <hr style={{align: "left", color: "black", backgroundColor: "black",height: 0, width:400, marginLeft: 0}}/>
             </li>
           );
         })}
-      </ul>
+      </ol>
     );
   }
 }
