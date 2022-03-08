@@ -87,8 +87,8 @@ DATABASES = {
         'NAME': 'library',
         'USER': 'library',
         'PASSWORD': 'Kursach20',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
     }
 }
 
