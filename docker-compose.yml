@@ -13,7 +13,7 @@ services:
     volumes:
       - ./db/data1:/var/lib/postgresql/data
   web:
-    build: .
+    image: electpo/library_web:latest
     environment:
       DB_HOST: 'db'
       DB_PORT: 5432
