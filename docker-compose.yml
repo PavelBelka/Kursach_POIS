@@ -19,7 +19,7 @@ services:
       DB_PORT: 5432
     command: python manage.py runserver 0.0.0.0:8000
     ports:
-      - "8005:8000"
+      - "8010:8000"
     volumes:
       - .:/libraryapp
     depends_on:
