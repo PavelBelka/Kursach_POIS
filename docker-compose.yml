@@ -11,7 +11,7 @@ services:
       POSTGRES_DB: library
       POSTGRES_HOST: 127.0.0.1
     volumes:
-      - ./db/data1:/var/lib/postgresql/data
+      - /home/user6/Belenkov_EVM/db/data4:/var/lib/postgresql/data
   web:
     image: electpo/library_web:latest
     environment:
