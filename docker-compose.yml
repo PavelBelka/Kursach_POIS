@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   db:
-    image: postgres:13.4-buster
+    image: postgres:13-alpine
     ports:
       - "5433:5432"
     environment:
